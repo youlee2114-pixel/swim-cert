@@ -224,23 +224,33 @@
       ctx.fillText(`소    속 : ${item.org}`, leftX, line4Y);
       ctx.fillText(`이    름 : ${item.name}`, leftX, line5Y);
 
-      // 3. 화면에 생성된 상장 보여주기
+      // 3. 모바일 이미지 저장 지원 (꾹 눌러 저장) & 인쇄 버튼
       const printArea = document.getElementById('print-area');
       printArea.style.display = 'block';
       
-      // 기존 인쇄 버튼 삭제 후 재생성
       const oldBtn = document.getElementById('btnDoPrint');
       if(oldBtn) oldBtn.remove();
+      const oldImg = document.getElementById('mobileCertImg');
+      if(oldImg) oldImg.remove();
 
+      // 모바일에서 꾹 눌러 저장할 수 있게 이미지 생성
+      const certImg = document.createElement('img');
+      certImg.id = 'mobileCertImg';
+      certImg.src = canvas.toDataURL('image/png');
+      certImg.style.cssText = 'max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 10px;';
+      
+      canvas.style.display = 'none';
+
+      // 인쇄 및 PDF 저장 버튼
       const printBtn = document.createElement('button');
       printBtn.id = 'btnDoPrint';
       printBtn.innerText = '🖨️ 이 상장 인쇄 / PDF 저장하기';
       printBtn.style.cssText = 'margin: 20px auto; padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; display: block;';
       printBtn.onclick = function() { window.print(); };
 
+      printArea.appendChild(certImg);
       printArea.appendChild(printBtn);
 
-      // 상장 화면 위치로 스크롤 이동
       printArea.scrollIntoView({ behavior: 'smooth' });
     };
 
