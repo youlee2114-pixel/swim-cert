@@ -172,8 +172,7 @@
         html += `
           <div class="result-card">
             <div class="info-row"><strong>성명:</strong> ${name} | <strong>소속:</strong> ${org}</div>
-            <div class="info-row"><strong>종목:</strong> ${category} | <strong>등위:</strong> ${rank} | <strong>기록:</strong> ${record}</div>
-            <button class="btn-print" onclick="generateAndShow('${itemJson}')">📜 미리보기</button>
+<div class="info-row"><strong>종목:</strong> ${category} | <strong>기록:</strong> ${record}</div>            <button class="btn-print" onclick="generateAndShow('${itemJson}')">📜 미리보기</button>
           </div>
         `;
       });
@@ -214,25 +213,24 @@
 
       // 2. 글자 스타일 설정
       ctx.fillStyle = "#000000";
-      ctx.font = "bold 24px 'Noto Sans KR', sans-serif"; 
+      ctx.font = "bold 26px 'Noto Sans KR', sans-serif"; 
       ctx.textAlign = "left";
       
       // 좌측 시작 X좌표
       const leftX = canvas.width * 0.22;   
       
       // 항목별 Y좌표 간격 (글자가 커져서 줄 간격도 넉넉하게 조정)
+     // Y좌표 변수 선언 부분도 4개만 남기고 간격을 알맞게 조절하세요
       const line1Y = canvas.height * 0.30; // 종목
-      const line2Y = canvas.height * 0.34; // 등위
-      const line3Y = canvas.height * 0.38; // 기록
-      const line4Y = canvas.height * 0.42; // 소속
-      const line5Y = canvas.height * 0.46; // 이름
+      const line2Y = canvas.height * 0.35; // 기록 (기존 line3Y)
+      const line3Y = canvas.height * 0.40; // 소속 (기존 line4Y)
+      const line4Y = canvas.height * 0.45; // 이름 (기존 line5Y)
 
-      // 5개 항목 세로 1열 출력
+      // 4개 항목 세로 1열 출력 (등위 삭제)
       ctx.fillText(`종    목 : ${item.category}`, leftX, line1Y);
-      ctx.fillText(`등    위 : ${item.rank}`, leftX, line2Y);
-      ctx.fillText(`기    록 : ${item.record}`, leftX, line3Y);
-      ctx.fillText(`소    속 : ${item.org}`, leftX, line4Y);
-      ctx.fillText(`이    름 : ${item.name}`, leftX, line5Y);
+      ctx.fillText(`기    록 : ${item.record}`, leftX, line2Y);
+      ctx.fillText(`소    속 : ${item.org}`, leftX, line3Y);
+      ctx.fillText(`이    름 : ${item.name}`, leftX, line4Y);
 
       // 3. 모바일 이미지 저장 지원 & 인쇄 버튼
       const printArea = document.getElementById('print-area');
