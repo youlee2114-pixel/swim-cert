@@ -232,7 +232,7 @@
       ctx.fillText(`소    속 : ${item.org}`, leftX, line3Y);
       ctx.fillText(`이    름 : ${item.name}`, leftX, line4Y);
 
-      // 3. 모바일 이미지 저장 지원 & 인쇄 버튼
+   // 3. 모바일 이미지 저장 지원 & 인쇄 버튼
       const printArea = document.getElementById('print-area');
       printArea.style.display = 'block';
       
@@ -241,31 +241,41 @@
       const oldImg = document.getElementById('mobileCertImg');
       if(oldImg) oldImg.remove();
 
-   const certImg = document.createElement('img');
+      const imgSrc = canvas.toDataURL('image/png');
+
+      const certImg = document.createElement('img');
       certImg.id = 'mobileCertImg';
-      certImg.src = canvas.toDataURL('image/png');
-      // display: block과 margin: 0 auto를 주어 불필요한 여백과 줄바꿈 방지
+      certImg.src = imgSrc;
       certImg.style.cssText = 'display: block; max-width: 100%; height: auto; border: 1px solid #ccc; margin: 0 auto;';
       
-      canvas.remove(); // 숨기는 대신 아예 DOM에서 제거하여 빈 공간 차단을 막음
+      canvas.style.display = 'none';
 
       const printBtn = document.createElement('button');
       printBtn.id = 'btnDoPrint';
       printBtn.innerText = '🖨️ 인쇄 / PDF 저장하기';
       printBtn.style.cssText = 'margin: 20px auto; padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; display: block;';
-      printBtn.onclick = function() { window.print(); };
+      
+      // ★ 새 창을 띄워서 인쇄하는 방식으로 변경 (빈 페이지 방지)
+      printBtn.onclick = function() {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>기록증 인쇄</title>
+              <style>
+                body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+                img { max-width: 100%; height: auto; page-break-inside: avoid; }
+              </style>
+            </head>
+            <body>
+              <img src="${imgSrc}" onload="window.print(); window.close();" />
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+      };
 
       printArea.appendChild(certImg);
       printArea.appendChild(printBtn);
 
       printArea.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    img.onerror = function() {
-      alert("이미지를 불러올 수 없습니다. 이미지 주소를 확인해 주세요.");
-    };
-  }
-</script>
-
-</body>
-</html>
