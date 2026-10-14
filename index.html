@@ -56,8 +56,14 @@
       background-color: #fafafa;
     }
     .info-row {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-size: 15px;
+    }
+    .download-period {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #6b7280;
     }
     .btn-print {
       width: 100%;
@@ -148,14 +154,16 @@
         const record = item["기록"] || "-";
         const no = item["연번"] || item["번호"] || item["NO"] || item["no"] || item["No"] || "";
 
-        // 등위 데이터는 제외하고 전달
         const itemJson = encodeURIComponent(JSON.stringify({ name, org, category, record, no }));
 
+        // 종목, 기록, 소속, 이름이 각각 한 줄씩 나오도록 구조 변경
         html += `
           <div class="result-card">
-            <div class="info-row"><strong>성명:</strong> ${name} | <strong>소속:</strong> ${org}</div>
-            <div class="info-row"><strong>종목:</strong> ${category} | <strong>기록:</strong> ${record}</div>
+            <div class="info-row"><strong>성명:</strong> ${name} &nbsp;|&nbsp; <strong>소속:</strong> ${org}</div>
+            <div class="info-row"><strong>종목:</strong> ${category}</div>
+            <div class="info-row"><strong>기록:</strong> ${record}</div>
             <button class="btn-print" onclick="generateAndShow('${itemJson}')">📜 미리보기</button>
+            <div class="download-period">다운로드 기간 : 2026년 11월 30일까지</div>
           </div>
         `;
       });
@@ -184,20 +192,20 @@
       // 1. 배경 그리기
       ctx.drawImage(img, 0, 0);
 
-      // 2. 글자 스타일 설정 (폰트 크기를 키우고 싶다면 24px 숫자를 조정하세요)
+      // 2. 글자 스타일 설정 (폰트 크기를 26px로 설정)
       ctx.fillStyle = "#000000";
-      ctx.font = "bold 24px 'Noto Sans KR', sans-serif"; 
+      ctx.font = "bold 26px 'Noto Sans KR', sans-serif"; 
       ctx.textAlign = "left";
       
       const leftX = canvas.width * 0.22;   
       
-      // 등위를 제외하고 4개 항목에 맞춰 Y좌표 간격 재정렬
+      // 폰트 크기가 커진 것에 맞춰 Y좌표 간격 조절
       const line1Y = canvas.height * 0.30; // 종목
       const line2Y = canvas.height * 0.35; // 기록
       const line3Y = canvas.height * 0.40; // 소속
       const line4Y = canvas.height * 0.45; // 이름
 
-      // 4개 항목 세로 1열 출력 (등위 삭제됨)
+      // 4개 항목 세로 1열 출력
       ctx.fillText(`종    목 : ${item.category}`, leftX, line1Y);
       ctx.fillText(`기    록 : ${item.record}`, leftX, line2Y);
       ctx.fillText(`소    속 : ${item.org}`, leftX, line3Y);
@@ -226,7 +234,7 @@
       printBtn.innerText = '🖨️ 인쇄 / PDF 저장하기';
       printBtn.style.cssText = 'margin: 20px auto; padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; display: block;';
       
-      // 새 창을 띄워 인쇄하는 방식 (빈 페이지 출력 방지)
+      // 새 창을 띄워 인쇄 (빈 페이지 방지)
       printBtn.onclick = function() {
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`
