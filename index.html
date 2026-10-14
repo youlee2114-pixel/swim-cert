@@ -241,12 +241,13 @@
       const oldImg = document.getElementById('mobileCertImg');
       if(oldImg) oldImg.remove();
 
-      const certImg = document.createElement('img');
+   const certImg = document.createElement('img');
       certImg.id = 'mobileCertImg';
       certImg.src = canvas.toDataURL('image/png');
-      certImg.style.cssText = 'max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 10px;';
+      // display: block과 margin: 0 auto를 주어 불필요한 여백과 줄바꿈 방지
+      certImg.style.cssText = 'display: block; max-width: 100%; height: auto; border: 1px solid #ccc; margin: 0 auto;';
       
-      canvas.style.display = 'none';
+      canvas.remove(); // 숨기는 대신 아예 DOM에서 제거하여 빈 공간 차단을 막음
 
       const printBtn = document.createElement('button');
       printBtn.id = 'btnDoPrint';
