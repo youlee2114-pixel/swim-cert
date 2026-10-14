@@ -156,12 +156,13 @@
 
         const itemJson = encodeURIComponent(JSON.stringify({ name, org, category, record, no }));
 
-        // 종목, 기록, 소속, 이름이 각각 한 줄씩 나오도록 구조 변경
+        // 종목, 기록, 소속, 이름 순서로 한 줄씩 출력되도록 수정
         html += `
           <div class="result-card">
-            <div class="info-row"><strong>성명:</strong> ${name} &nbsp;|&nbsp; <strong>소속:</strong> ${org}</div>
             <div class="info-row"><strong>종목:</strong> ${category}</div>
             <div class="info-row"><strong>기록:</strong> ${record}</div>
+            <div class="info-row"><strong>소속:</strong> ${org}</div>
+            <div class="info-row"><strong>이름:</strong> ${name}</div>
             <button class="btn-print" onclick="generateAndShow('${itemJson}')">📜 미리보기</button>
             <div class="download-period">다운로드 기간 : 2026년 11월 30일까지</div>
           </div>
@@ -199,13 +200,13 @@
       
       const leftX = canvas.width * 0.22;   
       
-      // 폰트 크기가 커진 것에 맞춰 Y좌표 간격 조절
+      // Y좌표 간격 설정
       const line1Y = canvas.height * 0.30; // 종목
       const line2Y = canvas.height * 0.35; // 기록
       const line3Y = canvas.height * 0.40; // 소속
       const line4Y = canvas.height * 0.45; // 이름
 
-      // 4개 항목 세로 1열 출력
+      // 순서대로 출력 (종목 -> 기록 -> 소속 -> 이름)
       ctx.fillText(`종    목 : ${item.category}`, leftX, line1Y);
       ctx.fillText(`기    록 : ${item.record}`, leftX, line2Y);
       ctx.fillText(`소    속 : ${item.org}`, leftX, line3Y);
